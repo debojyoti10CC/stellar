@@ -128,14 +128,45 @@ This Agreement shall be governed by the laws of [JURISDICTION].`,
 export class ContractService {
   private static instance: ContractService
   private contracts: Contract[] = []
+  private readonly STORAGE_KEY = "nexus-shield-contracts"
 
-  private constructor() {}
+  private constructor() {
+    this.loadContracts()
+  }
 
   static getInstance(): ContractService {
     if (!ContractService.instance) {
       ContractService.instance = new ContractService()
     }
     return ContractService.instance
+  }
+
+  private loadContracts() {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(this.STORAGE_KEY)
+        if (stored) {
+          this.contracts = JSON.parse(stored).map((c: any) => ({
+            ...c,
+            createdAt: new Date(c.createdAt),
+            updatedAt: new Date(c.updatedAt),
+          }))
+        }
+      } catch (error) {
+        console.error("Failed to load contracts from local storage:", error)
+        this.contracts = []
+      }
+    }
+  }
+
+  private saveContracts() {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.contracts))
+      } catch (error) {
+        console.error("Failed to save contracts to local storage:", error)
+      }
+    }
   }
 
   createContract(title: string, content: string, type: string, jurisdiction: string, parties: string[]): Contract {
@@ -151,14 +182,18 @@ export class ContractService {
       jurisdiction,
     }
     this.contracts.push(contract)
+    this.saveContracts()
     return contract
   }
 
   getContracts(): Contract[] {
+    // Reload from storage to ensure we have the latest if modified elsewhere
+    this.loadContracts()
     return [...this.contracts]
   }
 
   getContract(id: string): Contract | undefined {
+    this.loadContracts()
     return this.contracts.find((c) => c.id === id)
   }
 
@@ -171,6 +206,7 @@ export class ContractService {
       ...updates,
       updatedAt: new Date(),
     }
+    this.saveContracts()
     return this.contracts[index]
   }
 
@@ -179,6 +215,7 @@ export class ContractService {
     if (index === -1) return false
 
     this.contracts.splice(index, 1)
+    this.saveContracts()
     return true
   }
 }

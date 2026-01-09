@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Shield, FileText, Bot, Link2, Activity, TrendingUp, Users, Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,6 +13,8 @@ import { DashboardMobileNav } from "@/components/dashboard-mobile-nav"
 import { ContractTemplateSelector } from "@/components/contract-template-selector"
 import { ContractEditor } from "@/components/contract-editor"
 import { ContractList } from "@/components/contract-list"
+import { ContractAnalysisChatbot } from "@/components/contract-analysis-chatbot"
+import { BlockchainAuditTrail } from "@/components/blockchain-audit-trail"
 import { stellarService } from "@/lib/stellar-service"
 import { contractService, type Contract, type ContractTemplate } from "@/lib/contract-service"
 
@@ -28,6 +30,11 @@ export default function HomePage() {
   const [contracts, setContracts] = useState<Contract[]>([])
   const [contractsView, setContractsView] = useState<"list" | "view">("list")
   const [viewingContract, setViewingContract] = useState<Contract | undefined>()
+
+  useEffect(() => {
+    // Load contracts from persistence store on mount
+    setContracts(contractService.getContracts())
+  }, [])
 
   const handleWalletConnect = (publicKey: string, networkType: string) => {
     setWalletAddress(publicKey)
@@ -605,33 +612,7 @@ export default function HomePage() {
                 <p className="text-muted-foreground">AI-powered contract analysis and compliance checking</p>
               </div>
 
-              <Card className="border-border bg-gradient-to-br from-accent/10 to-primary/10">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Coming Soon</CardTitle>
-                  <CardDescription className="text-base">AI-powered legal intelligence features</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">This feature will include:</p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                      Automated risk detection
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                      Missing clause identification
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                      Cross-border compliance checks
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                      Legal terminology analysis
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+              <ContractAnalysisChatbot />
             </div>
           )}
 
@@ -642,33 +623,7 @@ export default function HomePage() {
                 <p className="text-muted-foreground">Anchor contract fingerprints on Stellar blockchain</p>
               </div>
 
-              <Card className="border-border bg-gradient-to-br from-chart-2/10 to-primary/10">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Coming Soon</CardTitle>
-                  <CardDescription className="text-base">Blockchain verification and anchoring</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">This feature will include:</p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-chart-2" />
-                      Cryptographic fingerprint generation
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-chart-2" />
-                      Stellar blockchain anchoring
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-chart-2" />
-                      Tamper-proof verification
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-chart-2" />
-                      Public verification links
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+              <BlockchainAuditTrail />
             </div>
           )}
 
