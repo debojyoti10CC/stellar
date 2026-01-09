@@ -1,18 +1,6 @@
-// Stellar wallet service for Freighter integration
-export interface FreighterApi {
-  isConnected: () => Promise<boolean>
-  getPublicKey: () => Promise<string>
-  signTransaction: (xdr: string, opts?: { network?: string; networkPassphrase?: string }) => Promise<string>
-  getNetwork: () => Promise<string>
-  isAllowed: () => Promise<boolean>
-  setAllowed: () => Promise<void>
-}
+import freighterApi from "@stellar/freighter-api";
 
-declare global {
-  interface Window {
-    freighterApi?: FreighterApi
-  }
-}
+const { isConnected, getAddress, getNetwork, isAllowed, setAllowed } = freighterApi;
 
 export type WalletType = "freighter" | "albedo" | "xbull" | "ledger" | "lobstr" | "rabet" | "hana"
 
@@ -28,58 +16,38 @@ export const SUPPORTED_WALLETS: WalletInfo[] = [
   {
     id: "freighter",
     name: "Freighter",
-    icon: "🚀",
+    icon: "",
     enabled: true,
     description: "Chrome Extension",
   },
   {
     id: "albedo",
     name: "Albedo",
-    icon: "⭐",
+    icon: "",
     enabled: true,
     description: "Web-based Wallet",
   },
   {
     id: "xbull",
     name: "xBull",
-    icon: "🐂",
+    icon: "",
     enabled: true,
     description: "Multi-platform Wallet",
   },
   {
     id: "ledger",
     name: "Ledger",
-    icon: "🔐",
+    icon: "",
     enabled: true,
     description: "Hardware Wallet",
   },
-  {
-    id: "lobstr",
-    name: "LOBSTR",
-    icon: "🦞",
-    enabled: false,
-    description: "Not Available",
-  },
-  {
-    id: "rabet",
-    name: "Rabet",
-    icon: "🐰",
-    enabled: false,
-    description: "Not Available",
-  },
-  {
-    id: "hana",
-    name: "Hana Wallet",
-    icon: "🌸",
-    enabled: false,
-    description: "Not Available",
-  },
+
 ]
 
 export class StellarWalletService {
   private static instance: StellarWalletService
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): StellarWalletService {
     if (!StellarWalletService.instance) {
@@ -89,34 +57,37 @@ export class StellarWalletService {
   }
 
   async isFreighterInstalled(): Promise<boolean> {
-    return typeof window !== "undefined" && typeof window.freighterApi !== "undefined"
+    try {
+      const { isConnected: connected } = await isConnected()
+      return connected
+    } catch {
+      return false
+    }
   }
 
   async connectFreighter(): Promise<{ publicKey: string; network: string }> {
-    if (typeof window === "undefined") {
-      throw new Error("Window is not defined")
-    }
+    const connected = await this.isFreighterInstalled()
 
-    if (!window.freighterApi) {
+    if (!connected) {
       throw new Error("Freighter wallet is not installed. Please install the Freighter browser extension.")
     }
 
     try {
       // Check if already allowed
-      const isAllowed = await window.freighterApi.isAllowed()
+      const { isAllowed: allowed } = await isAllowed()
 
-      if (!isAllowed) {
+      if (!allowed) {
         // Request permission
-        await window.freighterApi.setAllowed()
+        await setAllowed()
       }
 
-      // Get public key
-      const publicKey = await window.freighterApi.getPublicKey()
+      // Get public key (address)
+      const { address } = await getAddress()
 
       // Get network (should be testnet for this project)
-      const network = await window.freighterApi.getNetwork()
+      const { network } = await getNetwork()
 
-      return { publicKey, network }
+      return { publicKey: address, network }
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`Failed to connect to Freighter: ${error.message}`)
@@ -146,4 +117,4 @@ export class StellarWalletService {
   }
 }
 
-export const stellarService = StellarWalletService.getInstance()
+export const stellarService = StellarWalletService.getInstance();
