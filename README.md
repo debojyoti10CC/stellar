@@ -1,75 +1,54 @@
-# Nexus-Shield: AI-Driven Cross-Border Trade & Compliance Engine
+# Nexus-Shield 
+### AI-Powered Contract Lifecycle Management on the Stellar Blockchain
 
-## Project Overview
+Nexus-Shield is an enterprise-grade platform designed to solve the critical challenges of cross-border trade—including jurisdictional risk, version inconsistency, and lack of trust. By integrating **AI-driven legal intelligence** with **Stellar’s blockchain anchoring**, Nexus-Shield provides a secure, transparent, and verifiable environment for managing contracts from draft to execution.
 
-Nexus-Shield is a next-generation Contract Lifecycle Management (CLM) platform designed to bridge the "Trust Gap" in international trade. Developed for the TechTriad Hackathon, the platform addresses the fragmentation and risks associated with manual cross-border contracting by providing a unified, secure, and intelligent workbench.
+[📺 Watch the Demo Video](https://youtu.be/LjVOfTOljcQ)
 
-By integrating modern web workflows, AI-driven compliance sentinel, and the Stellar blockchain, Nexus-Shield ensures that every contract is transparent, tamper-proof, and audit-ready.
+---
 
+## 🚀 Key Features
 
-## Live Links
-Web Workbench: https://stellar-one-taupe.vercel.app/
+### 🏛️ Contract Management Workbench
+* **Intuitive Dashboard:** Monitor your contract lifecycle at a glance with status tracking for active contracts, AI scans, and verified records.
+* **Template Library:** Quickly generate Non-Disclosure Agreements (NDA), Service Agreements, and Partnership Agreements.
+* **Version Control:** Track modifications in real-time with multi-party negotiation and visual version comparisons.
 
-GitHub Repository: https://github.com/sylvia-barick/stellar.git
+### 🤖 AI Compliance Sentinel
+* **Automated Summarization:** Extracts key obligations, timelines, and payment terms instantly.
+* **Risk Detection:** Flags missing clauses (e.g., Force Majeure) and high-risk liability terms.
+* **Contract Q&A:** A context-aware legal assistant that answers questions grounded strictly in the uploaded document.
 
+### ⛓️ Blockchain Trust Layer (Stellar)
+* **Immutable Anchoring:** Anchors cryptographic hashes (SHA-256) of contract versions on the Stellar ledger.
+* **Digital Signatures:** Secure execution using Stellar wallets (Freighter, Albedo).
+* **Tamper-Proof Audit Trail:** A permanent, verifiable history of every approval, signature, and state change.
 
-## Core Integrated Themes
-### 1. Contract Management Workbench (Web UI/UX)
-Designed using Next.js, the workbench serves as a modern command center for managing contracts throughout their lifecycle:
+---
 
+## 🛠️ Technology Stack
 
-   **● Interactive Dashboard:** View key metrics, status updates, and alerts surfaced from AI and blockchain layers.
+* **Frontend:** [Next.js](https://nextjs.org/) (React), Tailwind CSS, Framer Motion
+* **AI Services:** Python, FastAPI, [LangChain](https://www.langchain.com/) (RAG), LLM APIs
+* **Blockchain:** [Stellar Network](https://stellar.org/), Soroban Smart Contracts
+* **Wallets:** Freighter, Albedo
 
-   **● Version Management:** Track every edit and version change with a clear visual history.
+---
 
-   **● Role-Based Workflow:** Secure approval flows for creators, reviewers, and approvers.
+## ⚙️ How It Works
 
-### 2. AI-Assisted Contract Intelligence
-A proactive AI engine that assists users in understanding and managing complex legal obligations:
+1.  **Draft:** Upload or create a contract in the Nexus Workbench.
+2.  **Analyze:** The AI Sentinel identifies clauses and flags jurisdictional risks.
+3.  **Collaborate:** Parties negotiate; every version is automatically hashed.
+4.  **Verify:** The contract's integrity is checked against the Stellar ledger.
+5.  **Execute:** Parties sign with their Stellar keys, creating a permanent on-chain record.
 
+---
 
-   **● Risk Sentinel:** Automatically flags unusual or missing clauses and provides explanations for potential cross-border legal risks.
+## 📂 Repository Structure
 
-
-   **● Clause Extraction:** Structures important data such as payment terms, liability, and termination conditions.
-
-
-   **● Contextual Q&A:** A grounded assistant that provides instant answers based strictly on the content of the uploaded contract.
-
-
-### 3. Blockchain-Backed Trust & Auditability
-Utilizes the Stellar Blockchain as a decentralized trust layer to provide immutable proof of contract integrity:
-
-
-   **● Document Anchoring:** Stores cryptographic hashes of every contract version on the Stellar ledger, enabling instant verification that a document has not been altered.
-
-
-   **● Immutable Audit Trail:** Provides a verifiable, time-stamped history of all approvals and signatures recorded on-chain.
-
-
-   **● High-Speed Finality:** Leverages Stellar’s efficiency to provide cost-effective and near-instant verification for enterprise scaling.
-
-
-## Technology Stack
-
-   **• Frontend:** Next.js, Tailwind CSS, Framer Motion.
-
-
-   **•Intelligence:** LLM-based RAG (Retrieval-Augmented Generation) for grounded analysis.
-
-
-   **•Trust Layer:** Stellar Network, Soroban Smart Contracts, Stellar SDK.
-
-
-## How It Works
-
-   **•Drafting:** Users create or upload contracts into the high-fidelity workbench.
-
-
-   **•Analysis:** The AI sentinel extracts clauses and highlights jurisdictional risks in real-time.
-
-
-   **•Verification:** The current state of the document is hashed and anchored to the Stellar Blockchain to create a "Trust Lock".
-
-
-   **•Execution:** Parties sign milestones recorded immutably on-chain, creating a forensic audit trail for global compliance.
+```text
+├── frontend/          # Next.js application & UI components
+├── ai-services/       # Python FastAPI service for NLP & RAG
+├── blockchain/        # Soroban smart contracts & Stellar SDK logic
+└── docs/              # Technical blueprints & documentation
